@@ -1,0 +1,157 @@
+class TRectangle:
+    def __init__(self, a = 0, b = 0):
+        if a >= 0 or b >= 0:
+            self.__a = a
+            self.__b = b
+        else:
+            raise Exception('Side length should be positive')
+
+    @property
+    def a(self):
+        return self.__a
+
+    @a.setter
+    def a(self, a):
+        if a >= 0:
+            self.__a = a
+        else:
+            raise Exception('Side length should be positive')
+
+    @property
+    def b(self):
+        return self.__b
+
+    @b.setter
+    def b(self, b):
+        if b >= 0:
+            self.__b = b
+        else:
+            raise Exception('Side length should be positive')
+
+    def enter_a(self):
+        self.__a = float(input("Введіть сторону а: "))
+
+    def enter_b(self):
+        self.__b = float(input("Введіть сторону b: "))
+
+    @property
+    def area(self):
+        return self.__a * self.__b
+
+    @property
+    def perimeter(self):
+        return (self.__a + self.__b) * 2
+
+    def __lt__(self, other):
+        return self.area < other.area
+
+    def __le__(self, other):
+        return self.area <= other.area
+
+    def __eq__(self, other):
+        return self.area == other.area
+
+    def __ne__(self, other):
+        return self.area != other.area
+
+    def __gt__(self, other):
+        return self.area > other.area
+
+    def __ge__(self, other):
+        return self.area >= other.area
+
+    def __add__(self, other):
+        return TRectangle(self.__a + other.a, self.__b + other.b)
+
+    def __sub__(self, other):
+        return TRectangle(self.__a - other.a, self.__b - other.b)
+
+    def __mul__(self, other):
+        return TRectangle(self.__a * other.a, self.__b * other.b)
+
+class TParallelepiped(TRectangle):
+    def __init__(self, a = 0, b = 0, h = 0):
+        TRectangle.__init__(self, a, b)
+        if h >= 0:
+            self.__h = h
+        else:
+            raise Exception('Side length should be positive')
+
+    @property
+    def h(self):
+        return self.__h
+
+    @h.setter
+    def h(self, h):
+        if h >= 0:
+            self.__h = h
+        else:
+            raise Exception('Side length should be positive')
+
+    @property
+    def capacity(self):
+        return super().area * self.__h
+
+    @property
+    def area(self):
+        return 2 * ((super().a * super().b) + (super().a * self.__h) + (super().b * self.__h))
+
+    @property
+    def perimeter(self):
+        return (super().a + super().b + self.__h) * 4
+
+    def enter_h(self):
+        self.__h = float(input("Введіть висоту: "))
+
+    def __add__(self, other):
+        return TParallelepiped(super().a + other.a, super().a + other.b, self.__h + other.h)
+
+    def __sub__(self, other):
+        return TParallelepiped(super().a - other.a, super().a - other.b, self.__h - other.h)
+
+    def __mul__(self, other):
+        return TParallelepiped(super().a * other.a, super().a * other.b, self.__h * other.h)
+
+if __name__ == "__main__":
+
+    #--- TRectangle
+
+    rect1 = TRectangle(5, 2)
+    rect2 = TRectangle(4, 6)
+
+    print(rect1.a)
+    print(rect1.b)
+    print(rect1.area)
+    print(rect1.perimeter)
+
+    rect1.enter_a()
+    rect2.enter_b()
+
+    print(rect1 > rect2)
+    print(rect1 < rect2)
+    print(rect1 == rect2)
+    print(rect1 != rect2)
+    print(rect1 >= rect2)
+    print(rect1 <= rect2)
+
+    add_rect = rect1 + rect2
+    sub_rect = rect1 - rect2
+    mul_rect = rect1 * rect2
+
+    #=== TParallelepiped
+
+    par = TParallelepiped(5, 2, 3)
+    par2 = TParallelepiped(4, 6, 5)
+
+    print(par.a)
+    print(par.b)
+    print(par.h)
+    print(par.area)
+    print(par.perimeter)
+    print(par.capacity)
+
+    par.enter_h()
+
+    add_par = par + par2
+    sub_par = par - par2
+    mul_par = par * par2
